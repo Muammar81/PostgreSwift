@@ -32,23 +32,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.txtDLLs = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.txtUsername = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtPassword = new System.Windows.Forms.TextBox();
-            this.txtDatabase = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.lst_Tables = new System.Windows.Forms.ListBox();
-            this.btn_connect = new System.Windows.Forms.Button();
             this.lbl_tables_count = new System.Windows.Forms.Label();
             this.lst_Fields = new System.Windows.Forms.ListBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.grp_Auth = new System.Windows.Forms.GroupBox();
-            this.numPort = new System.Windows.Forms.NumericUpDown();
-            this.ch_SSL = new System.Windows.Forms.CheckBox();
-            this.txtServer = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.grp_ObjectInfo = new System.Windows.Forms.GroupBox();
             this.label8 = new System.Windows.Forms.Label();
             this.txtTableFilter = new System.Windows.Forms.TextBox();
@@ -131,8 +118,6 @@
             this.bgwQuery = new System.ComponentModel.BackgroundWorker();
             this.label14 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.grp_Auth.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numPort)).BeginInit();
             this.grp_ObjectInfo.SuspendLayout();
             this.grp_ColumnInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numScale)).BeginInit();
@@ -176,59 +161,6 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Object DDL:";
             // 
-            // txtUsername
-            // 
-            this.txtUsername.Location = new System.Drawing.Point(79, 19);
-            this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(231, 20);
-            this.txtUsername.TabIndex = 5;
-            this.txtUsername.Text = "muammar.yacoob@wfp.org";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(17, 22);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(58, 13);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Username:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(17, 48);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(56, 13);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "Password:";
-            // 
-            // txtPassword
-            // 
-            this.txtPassword.Location = new System.Drawing.Point(79, 45);
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(231, 20);
-            this.txtPassword.TabIndex = 8;
-            this.txtPassword.Text = "Bju8Lx13ESbiWwfQ4Q5-NhEEfPGND-8pzqIKIq8wxiMDJdmAFRx9_oEZstx85uFwjDalbgGiWftgbs2bQ" +
-    "eAga2_VeW-kNr2phKwuXzqfG6Uk";
-            this.txtPassword.UseSystemPasswordChar = true;
-            // 
-            // txtDatabase
-            // 
-            this.txtDatabase.Location = new System.Drawing.Point(79, 71);
-            this.txtDatabase.Name = "txtDatabase";
-            this.txtDatabase.Size = new System.Drawing.Size(231, 20);
-            this.txtDatabase.TabIndex = 10;
-            this.txtDatabase.Text = "palantir";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(17, 74);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(56, 13);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Database:";
-            // 
             // lst_Tables
             // 
             this.lst_Tables.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -242,16 +174,6 @@
             this.lst_Tables.TabIndex = 11;
             this.lst_Tables.SelectedIndexChanged += new System.EventHandler(this.lst_Tables_SelectedIndexChanged);
             this.lst_Tables.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lst_Tables_KeyDown);
-            // 
-            // btn_connect
-            // 
-            this.btn_connect.Location = new System.Drawing.Point(20, 122);
-            this.btn_connect.Name = "btn_connect";
-            this.btn_connect.Size = new System.Drawing.Size(290, 23);
-            this.btn_connect.TabIndex = 12;
-            this.btn_connect.Text = "&Connect";
-            this.btn_connect.UseVisualStyleBackColor = true;
-            this.btn_connect.Click += new System.EventHandler(this.btn_connect_Click);
             // 
             // lbl_tables_count
             // 
@@ -283,87 +205,6 @@
             this.label6.Size = new System.Drawing.Size(37, 13);
             this.label6.TabIndex = 15;
             this.label6.Text = "Fields:";
-            // 
-            // grp_Auth
-            // 
-            this.grp_Auth.Controls.Add(this.numPort);
-            this.grp_Auth.Controls.Add(this.ch_SSL);
-            this.grp_Auth.Controls.Add(this.txtServer);
-            this.grp_Auth.Controls.Add(this.label7);
-            this.grp_Auth.Controls.Add(this.label2);
-            this.grp_Auth.Controls.Add(this.txtUsername);
-            this.grp_Auth.Controls.Add(this.label3);
-            this.grp_Auth.Controls.Add(this.txtPassword);
-            this.grp_Auth.Controls.Add(this.label4);
-            this.grp_Auth.Controls.Add(this.txtDatabase);
-            this.grp_Auth.Controls.Add(this.label5);
-            this.grp_Auth.Controls.Add(this.btn_connect);
-            this.grp_Auth.Location = new System.Drawing.Point(6, 6);
-            this.grp_Auth.Name = "grp_Auth";
-            this.grp_Auth.Size = new System.Drawing.Size(325, 178);
-            this.grp_Auth.TabIndex = 22;
-            this.grp_Auth.TabStop = false;
-            this.grp_Auth.Text = "Authentication";
-            // 
-            // numPort
-            // 
-            this.numPort.Location = new System.Drawing.Point(256, 96);
-            this.numPort.Maximum = new decimal(new int[] {
-            9999,
-            0,
-            0,
-            0});
-            this.numPort.Minimum = new decimal(new int[] {
-            1024,
-            0,
-            0,
-            0});
-            this.numPort.Name = "numPort";
-            this.numPort.Size = new System.Drawing.Size(54, 20);
-            this.numPort.TabIndex = 18;
-            this.numPort.Value = new decimal(new int[] {
-            5432,
-            0,
-            0,
-            0});
-            // 
-            // ch_SSL
-            // 
-            this.ch_SSL.AutoSize = true;
-            this.ch_SSL.Checked = true;
-            this.ch_SSL.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ch_SSL.Location = new System.Drawing.Point(20, 155);
-            this.ch_SSL.Name = "ch_SSL";
-            this.ch_SSL.Size = new System.Drawing.Size(86, 17);
-            this.ch_SSL.TabIndex = 17;
-            this.ch_SSL.Text = "Require SSL";
-            this.ch_SSL.UseVisualStyleBackColor = true;
-            // 
-            // txtServer
-            // 
-            this.txtServer.Location = new System.Drawing.Point(79, 96);
-            this.txtServer.Name = "txtServer";
-            this.txtServer.Size = new System.Drawing.Size(136, 20);
-            this.txtServer.TabIndex = 15;
-            this.txtServer.Text = "arabella.palantircloud.com";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(224, 99);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(29, 13);
-            this.label7.TabIndex = 14;
-            this.label7.Text = "Port:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(17, 99);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(41, 13);
-            this.label2.TabIndex = 14;
-            this.label2.Text = "Server:";
             // 
             // grp_ObjectInfo
             // 
@@ -879,7 +720,6 @@
             // 
             // tpQuery
             // 
-            this.tpQuery.Controls.Add(this.grp_Auth);
             this.tpQuery.Controls.Add(this.grp_ObjectInfo);
             this.tpQuery.Controls.Add(this.grp_ColumnInfo);
             this.tpQuery.Location = new System.Drawing.Point(4, 22);
@@ -1202,10 +1042,10 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Postgre Swift";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.Form1_Shown);
-            this.grp_Auth.ResumeLayout(false);
-            this.grp_Auth.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numPort)).EndInit();
             this.grp_ObjectInfo.ResumeLayout(false);
             this.grp_ObjectInfo.PerformLayout();
             this.grp_ColumnInfo.ResumeLayout(false);
@@ -1243,18 +1083,10 @@
 
         private System.Windows.Forms.TextBox txtDLLs;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtUsername;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txtPassword;
-        private System.Windows.Forms.TextBox txtDatabase;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ListBox lst_Tables;
-        private System.Windows.Forms.Button btn_connect;
         private System.Windows.Forms.Label lbl_tables_count;
         private System.Windows.Forms.ListBox lst_Fields;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.GroupBox grp_Auth;
         private System.Windows.Forms.GroupBox grp_ObjectInfo;
         private System.Windows.Forms.GroupBox grp_ColumnInfo;
         private System.Windows.Forms.StatusStrip statusStrip1;
@@ -1333,11 +1165,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.ComponentModel.BackgroundWorker bgwQuery;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.TextBox txtServer;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.CheckBox ch_SSL;
-        private System.Windows.Forms.NumericUpDown numPort;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtTableFilter;
         private System.Windows.Forms.Label label14;

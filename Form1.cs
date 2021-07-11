@@ -12,10 +12,6 @@ namespace PROC_GEN
     public partial class Form1 : Form
     {
         OracleDataGridViewHelper c;
-        public Form1()
-        {
-            InitializeComponent();
-        }
 
         string strTemp = String.Empty;
         string[] strFields;
@@ -28,23 +24,28 @@ namespace PROC_GEN
         NpgsqlCommand cmd;
         NpgsqlDataAdapter adap;
         private string connectionString;
+        private Authentication authForm;
         NpgsqlConnection con;
 
-        private void btn_connect_Click(object sender, EventArgs e)
+
+
+        public Form1(string connectionString, Authentication authForm)
         {
-            bool conStatus = false;
-            if (btn_connect.Text == "&Connect")
-                conStatus = DBConnect();
-            else
-                DBDisconnect();
+            NpgsqlConnectionStringBuilder sb = new NpgsqlConnectionStringBuilder(connectionString);
+            this.userName = sb.Username;
+            this.password = sb.Password;
 
-            if (conStatus)
-            {
-                PopulateObjectList(chTablesOnly.Checked);
-                GenerateObjectList(ref tv_Objects);
+            this.connectionString = connectionString;
+            this.authForm = authForm;
 
-            }
+            InitializeComponent();
+            this.Show();
+
+
         }
+
+
+
 
         private void DBDisconnect()
         {
@@ -73,83 +74,13 @@ namespace PROC_GEN
             tsStatus.Text = "Disconnected.";
 
 
-            foreach (Control c in grp_Auth.Controls)
-                if (c.Name != "btn_connect")
-                    c.Enabled = true;
-            btn_connect.Text = "&Connect";
+
+
+            authForm.Show();
+            this.Hide();
         }
 
-        private bool DBConnect()
-        {
 
-            foreach (Control c in grp_Auth.Controls)
-                if (c.Name != "btn_connect")
-                    c.Enabled = false;
-            connectionString =
-                $"Server={txtServer.Text}; " +
-                $"Port={numPort.Value}; " +
-                $"Userid={txtUsername.Text}; " +
-                $"Password={txtPassword.Text}; " +
-                $"Database={txtDatabase.Text}; " +
-                $"sslmode={(ch_SSL.Checked ? "Require" : "Prefer")}; " +
-                $"Trust Server Certificate=true; " +
-                $"Pooling=true; Minimum Pool Size=10;Maximum Pool Size=100;";
-
-
-            /*NpgsqlConnectionStringBuilder s = new NpgsqlConnectionStringBuilder(connectionString);
-            s.SslMode = SslMode.Prefer;
-            connectionString = s.ToString();*/
-
-
-
-            con = new NpgsqlConnection(connectionString);
-
-
-            /*            NpgsqlConnectionStringBuilder s = new NpgsqlConnectionStringBuilder(connectionString);
-                        s.SslMode = SslMode.Require;
-                        con.ConnectionString = s.ToString();*/
-
-
-
-            try
-            {
-                con.OpenAsync();
-                lbl_status.Text = "Connected to " + txtUsername.Text;
-
-                //Format
-                btn_connect.Text = "&Disconnect";
-                connectToolStripMenuItem.Text = "&Disconnect";
-
-                grp_ObjectInfo.Enabled = true;
-                grp_ColumnInfo.Enabled = true;
-                txtQuery.Enabled = true;
-                tsStatus.Text = "Idle";
-                menuStrip1.Enabled = true;
-
-
-
-                if (lst_Tables.Items.Count > 0)
-                    lst_Tables.SelectedItem = lst_Tables.Items[0];
-
-                //GenerateObjectList(ref tv_Objects);
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                lbl_status.Text = "Disconnected";
-                btn_connect.Text = "&Connect";
-                DialogResult dr = MessageBox.Show("Error connecting to " + txtUsername.Text + "\nPlease make sure you provided the correct Password and SID.", "Connection Failed", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
-                if (dr == DialogResult.Retry)
-                    DBConnect();
-                else
-                    foreach (Control c in grp_Auth.Controls)
-                        c.Enabled = true;
-
-                return false;
-            }
-        }
 
         private void PopulateObjectList(bool bTablesOnly)
         {
@@ -346,7 +277,7 @@ namespace PROC_GEN
                 foreach (string strObjectName in ar_tables)
                 {
                     strSelectedObjectType = GetObjectType(strObjectName);
-                    txtDLLs.Text += PopulateObjectDLL(strSelectedObjectType, strObjectName, txtUsername.Text) + "/\r\n\r\n";
+                    txtDLLs.Text += PopulateObjectDLL(strSelectedObjectType, strObjectName, userName) + "/\r\n\r\n";
                 }
                 ///////////////////////////////////////
             }
@@ -378,14 +309,14 @@ namespace PROC_GEN
         private void saveToFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             saveFileDialog1.Filter = @"SQL Files|*.sql";
-            saveFileDialog1.FileName = txtUsername.Text + "_PROCS.sql";
+            saveFileDialog1.FileName = userName + "_PROCS.sql";
             saveFileDialog1.ShowDialog();
 
             string FinalFileName = saveFileDialog1.FileName.ToLower().EndsWith(".sql") ? saveFileDialog1.FileName : saveFileDialog1.FileName + ".sql";
 
             StreamWriter sw = new StreamWriter(FinalFileName);
 
-            sw.Write("CONN " + txtUsername.Text + "/" + txtPassword.Text + ((txtDatabase.Text.Length) > 0 ? @"@" + txtDatabase.Text : "") + txtDatabase.Text + "\r\n/\r\n" + txtUsername.Text + "\r\n" + txtUsername.Text + "\r\nEXIT\r\n/\r\n");
+            sw.Write("CONN " + userName + "/" + password + ((database.Length) > 0 ? @"@" + database : "") + database + "\r\n/\r\n" + userName + "\r\n" + userName + "\r\nEXIT\r\n/\r\n");
             sw.Close();
 
             FileStream fs = new FileStream(FinalFileName.Replace(".sql", "") + "_SETUP.bat", FileMode.OpenOrCreate, FileAccess.Write);
@@ -394,7 +325,7 @@ namespace PROC_GEN
             sw = new StreamWriter(FinalFileName.Replace(".sql", "") + "_SETUP.bat", false);
             sw.Write(@"@PROMPT $Z
 CLS
-@SQLPLUS " + txtUsername.Text + @"/" + txtPassword.Text + ((txtDatabase.Text.Length) > 0 ? @"@" + txtDatabase.Text : "") + @" @""" + FinalFileName.Replace(System.Environment.CurrentDirectory, ".") + @"""
+@SQLPLUS " + userName + @"/" + password + ((database.Length) > 0 ? @"@" + database : "") + @" @""" + FinalFileName.Replace(System.Environment.CurrentDirectory, ".") + @"""
 @ECHO.
 @ECHO " + Convert.ToString(lst_Tables.SelectedItems.Count * 3) + @" procedures were created successfully!
 @PAUSE
@@ -612,7 +543,7 @@ CLS
                 int iTablesEffected = lst_Tables.SelectedItems.Count;
                 int iProcsEffected = 0;
                 string tmp =
-                    txtUsername.Text.Replace("\r\n/\r\n", ":");
+                    userName.Replace("\r\n/\r\n", ":");
                 tmp = tmp.Substring(0, tmp.Length - 1);
 
                 string[] alterLines = tmp.Split(':');
@@ -988,6 +919,11 @@ CLS
         }
 
         string strTempFile;
+        private string userName;
+        private string database;
+        private string password;
+        private bool closingConfirmed;
+
         private void generateObjectStructureReportToolStripMenuItem_Click(object sender, EventArgs e)
         {
             saveFileDialog1.Filter = @"HTML Files|*.htm";
@@ -1066,7 +1002,7 @@ CLS
             sw.Flush();
             sw.Close();
 
-            p.StartInfo.Arguments = txtUsername.Text + @"/" + txtPassword.Text + ((txtDatabase.Text.Length) > 0 ? @"@" + txtDatabase.Text : String.Empty) + @" @""" + strTempFile + @"""";
+            p.StartInfo.Arguments = userName + @"/" + password + ((database.Length) > 0 ? @"@" + database : String.Empty) + @" @""" + strTempFile + @"""";
             p.Start();
             #endregion
         }
@@ -1098,7 +1034,7 @@ CLS
             string CR = "\r\n";
 
 
-            string strScript = PopulateObjectsDLL("TABLE", txtUsername.Text);
+            string strScript = PopulateObjectsDLL("TABLE", userName);
             strScript = "-- ### Created by OraSwift ### --" + CR + CR +
             strScript.Replace("CREATE TABLE", CR + "/" + CR + "CREATE TABLE");
             //Writing Script File
@@ -1150,6 +1086,39 @@ CLS
         private void txtTableFilter_TextChanged(object sender, EventArgs e)
         {
             GenerateObjectList(ref tv_Objects);
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            PopulateObjectList(chTablesOnly.Checked);
+            GenerateObjectList(ref tv_Objects);
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (closingConfirmed)
+            {
+                Application.Exit();
+                return;
+            }
+            else
+                e.Cancel = true;
+
+            var dr = MessageBox.Show("You're about to be disconnected. Are you sure you want to continue?"
+                , "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+
+            if (dr == DialogResult.Yes)
+            {
+                e.Cancel = false;
+                closingConfirmed = true;
+                this.Close();
+            }
+
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
         }
 
         private void registerOnlineToolStripMenuItem_Click(object sender, EventArgs e)
