@@ -30,37 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.txtDLLs = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.lst_Tables = new System.Windows.Forms.ListBox();
-            this.lbl_tables_count = new System.Windows.Forms.Label();
-            this.lst_Fields = new System.Windows.Forms.ListBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.grp_ObjectInfo = new System.Windows.Forms.GroupBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.txtTableFilter = new System.Windows.Forms.TextBox();
-            this.chTablesOnly = new System.Windows.Forms.CheckBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.btnTBL_Delete = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.ch_Autonumber = new System.Windows.Forms.CheckBox();
-            this.lnkRefreshTables = new System.Windows.Forms.LinkLabel();
-            this.lnkRefreshColumns = new System.Windows.Forms.LinkLabel();
-            this.btnColDel = new System.Windows.Forms.Button();
-            this.grp_ColumnInfo = new System.Windows.Forms.GroupBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.txtColumnDefault = new System.Windows.Forms.TextBox();
-            this.ch_Nullable = new System.Windows.Forms.CheckBox();
-            this.txtAlterColumns = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.numScale = new System.Windows.Forms.NumericUpDown();
-            this.cmbColumnType = new System.Windows.Forms.ComboBox();
-            this.numColumnSize = new System.Windows.Forms.NumericUpDown();
-            this.label11 = new System.Windows.Forms.Label();
-            this.btnColAdd = new System.Windows.Forms.Button();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.txtColumnName = new System.Windows.Forms.TextBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lbl_status = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -87,15 +56,20 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.tabControl2 = new System.Windows.Forms.TabControl();
-            this.tpQuery = new System.Windows.Forms.TabPage();
             this.tpTableManager = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.tv_Objects = new System.Windows.Forms.TreeView();
+            this.chTablesOnly = new System.Windows.Forms.CheckBox();
+            this.lbl_tables_count = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.txtTableFilter = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.lstObjects = new System.Windows.Forms.TreeView();
             this.cmTV_Objects = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.queryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.describeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dropToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.lst_Fields = new System.Windows.Forms.ListBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsExecute = new System.Windows.Forms.ToolStripButton();
             this.tsStatus = new System.Windows.Forms.ToolStripLabel();
@@ -116,21 +90,17 @@
             this.extendedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.grdQuery = new System.Windows.Forms.DataGridView();
             this.bgwQuery = new System.ComponentModel.BackgroundWorker();
-            this.label14 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.grp_ObjectInfo.SuspendLayout();
-            this.grp_ColumnInfo.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numScale)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numColumnSize)).BeginInit();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.tabControl2.SuspendLayout();
-            this.tpQuery.SuspendLayout();
             this.tpTableManager.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.cmTV_Objects.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -140,392 +110,6 @@
             this.cmQueryArea.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grdQuery)).BeginInit();
             this.SuspendLayout();
-            // 
-            // txtDLLs
-            // 
-            this.txtDLLs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtDLLs.Location = new System.Drawing.Point(209, 189);
-            this.txtDLLs.Multiline = true;
-            this.txtDLLs.Name = "txtDLLs";
-            this.txtDLLs.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtDLLs.Size = new System.Drawing.Size(223, 92);
-            this.txtDLLs.TabIndex = 1;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(209, 173);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(66, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Object DDL:";
-            // 
-            // lst_Tables
-            // 
-            this.lst_Tables.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.lst_Tables.FormattingEnabled = true;
-            this.lst_Tables.HorizontalScrollbar = true;
-            this.lst_Tables.Location = new System.Drawing.Point(10, 43);
-            this.lst_Tables.Name = "lst_Tables";
-            this.lst_Tables.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lst_Tables.Size = new System.Drawing.Size(183, 212);
-            this.lst_Tables.TabIndex = 11;
-            this.lst_Tables.SelectedIndexChanged += new System.EventHandler(this.lst_Tables_SelectedIndexChanged);
-            this.lst_Tables.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lst_Tables_KeyDown);
-            // 
-            // lbl_tables_count
-            // 
-            this.lbl_tables_count.AutoSize = true;
-            this.lbl_tables_count.Location = new System.Drawing.Point(8, 282);
-            this.lbl_tables_count.Name = "lbl_tables_count";
-            this.lbl_tables_count.Size = new System.Drawing.Size(73, 13);
-            this.lbl_tables_count.TabIndex = 13;
-            this.lbl_tables_count.Text = "Disconnected";
-            // 
-            // lst_Fields
-            // 
-            this.lst_Fields.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.lst_Fields.FormattingEnabled = true;
-            this.lst_Fields.HorizontalScrollbar = true;
-            this.lst_Fields.Location = new System.Drawing.Point(212, 43);
-            this.lst_Fields.Name = "lst_Fields";
-            this.lst_Fields.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lst_Fields.Size = new System.Drawing.Size(197, 95);
-            this.lst_Fields.TabIndex = 14;
-            this.lst_Fields.SelectedIndexChanged += new System.EventHandler(this.lst_Fields_SelectedIndexChanged);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(209, 27);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(37, 13);
-            this.label6.TabIndex = 15;
-            this.label6.Text = "Fields:";
-            // 
-            // grp_ObjectInfo
-            // 
-            this.grp_ObjectInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.grp_ObjectInfo.Controls.Add(this.label8);
-            this.grp_ObjectInfo.Controls.Add(this.txtTableFilter);
-            this.grp_ObjectInfo.Controls.Add(this.lst_Tables);
-            this.grp_ObjectInfo.Controls.Add(this.chTablesOnly);
-            this.grp_ObjectInfo.Controls.Add(this.button2);
-            this.grp_ObjectInfo.Controls.Add(this.btnTBL_Delete);
-            this.grp_ObjectInfo.Controls.Add(this.button1);
-            this.grp_ObjectInfo.Controls.Add(this.ch_Autonumber);
-            this.grp_ObjectInfo.Controls.Add(this.lnkRefreshTables);
-            this.grp_ObjectInfo.Controls.Add(this.lnkRefreshColumns);
-            this.grp_ObjectInfo.Controls.Add(this.txtDLLs);
-            this.grp_ObjectInfo.Controls.Add(this.label1);
-            this.grp_ObjectInfo.Controls.Add(this.lbl_tables_count);
-            this.grp_ObjectInfo.Controls.Add(this.lst_Fields);
-            this.grp_ObjectInfo.Controls.Add(this.label6);
-            this.grp_ObjectInfo.Controls.Add(this.btnColDel);
-            this.grp_ObjectInfo.Enabled = false;
-            this.grp_ObjectInfo.Location = new System.Drawing.Point(337, 8);
-            this.grp_ObjectInfo.Name = "grp_ObjectInfo";
-            this.grp_ObjectInfo.Size = new System.Drawing.Size(440, 299);
-            this.grp_ObjectInfo.TabIndex = 23;
-            this.grp_ObjectInfo.TabStop = false;
-            this.grp_ObjectInfo.Text = "Object info";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(8, 24);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(32, 13);
-            this.label8.TabIndex = 19;
-            this.label8.Text = "Filter:";
-            // 
-            // txtTableFilter
-            // 
-            this.txtTableFilter.Location = new System.Drawing.Point(41, 21);
-            this.txtTableFilter.Name = "txtTableFilter";
-            this.txtTableFilter.Size = new System.Drawing.Size(111, 20);
-            this.txtTableFilter.TabIndex = 22;
-            this.txtTableFilter.Text = "Consolidated";
-            this.txtTableFilter.TextChanged += new System.EventHandler(this.txtTableFilter_TextChanged);
-            // 
-            // chTablesOnly
-            // 
-            this.chTablesOnly.AutoSize = true;
-            this.chTablesOnly.Checked = true;
-            this.chTablesOnly.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chTablesOnly.Location = new System.Drawing.Point(11, 262);
-            this.chTablesOnly.Name = "chTablesOnly";
-            this.chTablesOnly.Size = new System.Drawing.Size(80, 17);
-            this.chTablesOnly.TabIndex = 18;
-            this.chTablesOnly.Text = "Tables only";
-            this.chTablesOnly.UseVisualStyleBackColor = true;
-            this.chTablesOnly.CheckedChanged += new System.EventHandler(this.chShowAll_CheckedChanged);
-            // 
-            // button2
-            // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(415, 91);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(17, 23);
-            this.button2.TabIndex = 21;
-            this.button2.Text = "D";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // btnTBL_Delete
-            // 
-            this.btnTBL_Delete.Location = new System.Drawing.Point(136, 258);
-            this.btnTBL_Delete.Name = "btnTBL_Delete";
-            this.btnTBL_Delete.Size = new System.Drawing.Size(57, 23);
-            this.btnTBL_Delete.TabIndex = 0;
-            this.btnTBL_Delete.Text = "Drop";
-            this.btnTBL_Delete.UseVisualStyleBackColor = true;
-            this.btnTBL_Delete.Click += new System.EventHandler(this.btnColDel_Click);
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(415, 62);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(17, 23);
-            this.button1.TabIndex = 21;
-            this.button1.Text = "U";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // ch_Autonumber
-            // 
-            this.ch_Autonumber.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.ch_Autonumber.AutoSize = true;
-            this.ch_Autonumber.Location = new System.Drawing.Point(212, 144);
-            this.ch_Autonumber.Name = "ch_Autonumber";
-            this.ch_Autonumber.Size = new System.Drawing.Size(83, 17);
-            this.ch_Autonumber.TabIndex = 18;
-            this.ch_Autonumber.Text = "Autonumber";
-            this.ch_Autonumber.UseVisualStyleBackColor = true;
-            // 
-            // lnkRefreshTables
-            // 
-            this.lnkRefreshTables.AutoSize = true;
-            this.lnkRefreshTables.LinkColor = System.Drawing.Color.SteelBlue;
-            this.lnkRefreshTables.Location = new System.Drawing.Point(158, 27);
-            this.lnkRefreshTables.Name = "lnkRefreshTables";
-            this.lnkRefreshTables.Size = new System.Drawing.Size(44, 13);
-            this.lnkRefreshTables.TabIndex = 17;
-            this.lnkRefreshTables.TabStop = true;
-            this.lnkRefreshTables.Text = "Refresh";
-            this.lnkRefreshTables.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkRefreshTables_LinkClicked);
-            // 
-            // lnkRefreshColumns
-            // 
-            this.lnkRefreshColumns.AutoSize = true;
-            this.lnkRefreshColumns.LinkColor = System.Drawing.Color.SteelBlue;
-            this.lnkRefreshColumns.Location = new System.Drawing.Point(364, 27);
-            this.lnkRefreshColumns.Name = "lnkRefreshColumns";
-            this.lnkRefreshColumns.Size = new System.Drawing.Size(44, 13);
-            this.lnkRefreshColumns.TabIndex = 16;
-            this.lnkRefreshColumns.TabStop = true;
-            this.lnkRefreshColumns.Text = "Refresh";
-            this.lnkRefreshColumns.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkRefreshColumns_LinkClicked);
-            // 
-            // btnColDel
-            // 
-            this.btnColDel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnColDel.Location = new System.Drawing.Point(352, 144);
-            this.btnColDel.Name = "btnColDel";
-            this.btnColDel.Size = new System.Drawing.Size(57, 23);
-            this.btnColDel.TabIndex = 0;
-            this.btnColDel.Text = "Drop";
-            this.btnColDel.UseVisualStyleBackColor = true;
-            this.btnColDel.Click += new System.EventHandler(this.btnColDel_Click);
-            // 
-            // grp_ColumnInfo
-            // 
-            this.grp_ColumnInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.grp_ColumnInfo.Controls.Add(this.label13);
-            this.grp_ColumnInfo.Controls.Add(this.txtColumnDefault);
-            this.grp_ColumnInfo.Controls.Add(this.ch_Nullable);
-            this.grp_ColumnInfo.Controls.Add(this.txtAlterColumns);
-            this.grp_ColumnInfo.Controls.Add(this.label12);
-            this.grp_ColumnInfo.Controls.Add(this.numScale);
-            this.grp_ColumnInfo.Controls.Add(this.cmbColumnType);
-            this.grp_ColumnInfo.Controls.Add(this.numColumnSize);
-            this.grp_ColumnInfo.Controls.Add(this.label11);
-            this.grp_ColumnInfo.Controls.Add(this.btnColAdd);
-            this.grp_ColumnInfo.Controls.Add(this.label10);
-            this.grp_ColumnInfo.Controls.Add(this.label9);
-            this.grp_ColumnInfo.Controls.Add(this.txtColumnName);
-            this.grp_ColumnInfo.Enabled = false;
-            this.grp_ColumnInfo.Location = new System.Drawing.Point(337, 313);
-            this.grp_ColumnInfo.Name = "grp_ColumnInfo";
-            this.grp_ColumnInfo.Size = new System.Drawing.Size(440, 160);
-            this.grp_ColumnInfo.TabIndex = 24;
-            this.grp_ColumnInfo.TabStop = false;
-            this.grp_ColumnInfo.Text = "Column info";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(291, 59);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(41, 13);
-            this.label13.TabIndex = 24;
-            this.label13.Text = "Default";
-            // 
-            // txtColumnDefault
-            // 
-            this.txtColumnDefault.Location = new System.Drawing.Point(294, 75);
-            this.txtColumnDefault.Name = "txtColumnDefault";
-            this.txtColumnDefault.Size = new System.Drawing.Size(67, 20);
-            this.txtColumnDefault.TabIndex = 23;
-            this.txtColumnDefault.TextChanged += new System.EventHandler(this.txtColumnDefault_TextChanged);
-            // 
-            // ch_Nullable
-            // 
-            this.ch_Nullable.AutoSize = true;
-            this.ch_Nullable.Location = new System.Drawing.Point(367, 75);
-            this.ch_Nullable.Name = "ch_Nullable";
-            this.ch_Nullable.Size = new System.Drawing.Size(64, 17);
-            this.ch_Nullable.TabIndex = 22;
-            this.ch_Nullable.Text = "Nullable";
-            this.ch_Nullable.UseVisualStyleBackColor = true;
-            this.ch_Nullable.CheckedChanged += new System.EventHandler(this.ch_Nullable_CheckedChanged);
-            // 
-            // txtAlterColumns
-            // 
-            this.txtAlterColumns.Location = new System.Drawing.Point(10, 100);
-            this.txtAlterColumns.Multiline = true;
-            this.txtAlterColumns.Name = "txtAlterColumns";
-            this.txtAlterColumns.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtAlterColumns.Size = new System.Drawing.Size(422, 54);
-            this.txtAlterColumns.TabIndex = 21;
-            this.txtAlterColumns.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAlterColumns_KeyDown);
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(233, 58);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(37, 13);
-            this.label12.TabIndex = 13;
-            this.label12.Text = "Scale:";
-            // 
-            // numScale
-            // 
-            this.numScale.Location = new System.Drawing.Point(236, 74);
-            this.numScale.Maximum = new decimal(new int[] {
-            127,
-            0,
-            0,
-            0});
-            this.numScale.Minimum = new decimal(new int[] {
-            84,
-            0,
-            0,
-            -2147483648});
-            this.numScale.Name = "numScale";
-            this.numScale.Size = new System.Drawing.Size(52, 20);
-            this.numScale.TabIndex = 12;
-            this.numScale.ValueChanged += new System.EventHandler(this.numScale_ValueChanged);
-            // 
-            // cmbColumnType
-            // 
-            this.cmbColumnType.FormattingEnabled = true;
-            this.cmbColumnType.Items.AddRange(new object[] {
-            "CHAR",
-            "VARCHAR2",
-            "NCHAR",
-            "NVARCHAR2",
-            "NUMBER",
-            "LONG",
-            "FLOAT",
-            "DATE",
-            "RAW",
-            "LONGRAW",
-            "ROWID",
-            "UROWID",
-            "BLOB",
-            "CLOB",
-            "NCLOB",
-            "BFILE"});
-            this.cmbColumnType.Location = new System.Drawing.Point(10, 73);
-            this.cmbColumnType.Name = "cmbColumnType";
-            this.cmbColumnType.Size = new System.Drawing.Size(162, 21);
-            this.cmbColumnType.TabIndex = 11;
-            this.cmbColumnType.Text = "NUMBER";
-            this.cmbColumnType.SelectedIndexChanged += new System.EventHandler(this.cmbColumnType_SelectedIndexChanged);
-            // 
-            // numColumnSize
-            // 
-            this.numColumnSize.Location = new System.Drawing.Point(178, 74);
-            this.numColumnSize.Maximum = new decimal(new int[] {
-            38,
-            0,
-            0,
-            0});
-            this.numColumnSize.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numColumnSize.Name = "numColumnSize";
-            this.numColumnSize.Size = new System.Drawing.Size(52, 20);
-            this.numColumnSize.TabIndex = 10;
-            this.numColumnSize.Value = new decimal(new int[] {
-            9,
-            0,
-            0,
-            0});
-            this.numColumnSize.ValueChanged += new System.EventHandler(this.numColumnSize_ValueChanged);
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(179, 58);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(30, 13);
-            this.label11.TabIndex = 9;
-            this.label11.Text = "Size:";
-            // 
-            // btnColAdd
-            // 
-            this.btnColAdd.Location = new System.Drawing.Point(357, 31);
-            this.btnColAdd.Name = "btnColAdd";
-            this.btnColAdd.Size = new System.Drawing.Size(75, 23);
-            this.btnColAdd.TabIndex = 6;
-            this.btnColAdd.Text = "Add/Modify";
-            this.btnColAdd.UseVisualStyleBackColor = true;
-            this.btnColAdd.Click += new System.EventHandler(this.btnColAdd_Click);
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(11, 57);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(72, 13);
-            this.label10.TabIndex = 5;
-            this.label10.Text = "Column Type:";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(8, 19);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(76, 13);
-            this.label9.TabIndex = 2;
-            this.label9.Text = "Column Name:";
-            // 
-            // txtColumnName
-            // 
-            this.txtColumnName.Location = new System.Drawing.Point(11, 34);
-            this.txtColumnName.Name = "txtColumnName";
-            this.txtColumnName.Size = new System.Drawing.Size(340, 20);
-            this.txtColumnName.TabIndex = 1;
-            this.txtColumnName.TextChanged += new System.EventHandler(this.txtColumnName_TextChanged);
             // 
             // statusStrip1
             // 
@@ -540,8 +124,8 @@
             // lbl_status
             // 
             this.lbl_status.Name = "lbl_status";
-            this.lbl_status.Size = new System.Drawing.Size(79, 17);
-            this.lbl_status.Text = "Disconnected";
+            this.lbl_status.Size = new System.Drawing.Size(65, 17);
+            this.lbl_status.Text = "Connected";
             // 
             // menuStrip1
             // 
@@ -708,7 +292,6 @@
             // 
             // tabControl2
             // 
-            this.tabControl2.Controls.Add(this.tpQuery);
             this.tabControl2.Controls.Add(this.tpTableManager);
             this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl2.Location = new System.Drawing.Point(0, 24);
@@ -717,18 +300,6 @@
             this.tabControl2.Size = new System.Drawing.Size(795, 508);
             this.tabControl2.TabIndex = 28;
             this.tabControl2.SelectedIndexChanged += new System.EventHandler(this.tabControl2_SelectedIndexChanged);
-            // 
-            // tpQuery
-            // 
-            this.tpQuery.Controls.Add(this.grp_ObjectInfo);
-            this.tpQuery.Controls.Add(this.grp_ColumnInfo);
-            this.tpQuery.Location = new System.Drawing.Point(4, 22);
-            this.tpQuery.Name = "tpQuery";
-            this.tpQuery.Padding = new System.Windows.Forms.Padding(3);
-            this.tpQuery.Size = new System.Drawing.Size(787, 482);
-            this.tpQuery.TabIndex = 0;
-            this.tpQuery.Text = "Table Manager";
-            this.tpQuery.UseVisualStyleBackColor = true;
             // 
             // tpTableManager
             // 
@@ -749,9 +320,12 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.chTablesOnly);
+            this.splitContainer2.Panel1.Controls.Add(this.lbl_tables_count);
+            this.splitContainer2.Panel1.Controls.Add(this.pictureBox1);
+            this.splitContainer2.Panel1.Controls.Add(this.txtTableFilter);
             this.splitContainer2.Panel1.Controls.Add(this.label14);
-            this.splitContainer2.Panel1.Controls.Add(this.textBox1);
-            this.splitContainer2.Panel1.Controls.Add(this.tv_Objects);
+            this.splitContainer2.Panel1.Controls.Add(this.lstObjects);
             // 
             // splitContainer2.Panel2
             // 
@@ -760,17 +334,73 @@
             this.splitContainer2.SplitterDistance = 179;
             this.splitContainer2.TabIndex = 1;
             // 
-            // tv_Objects
+            // chTablesOnly
             // 
-            this.tv_Objects.ContextMenuStrip = this.cmTV_Objects;
-            this.tv_Objects.HideSelection = false;
-            this.tv_Objects.Location = new System.Drawing.Point(0, 30);
-            this.tv_Objects.Name = "tv_Objects";
-            this.tv_Objects.Size = new System.Drawing.Size(179, 446);
-            this.tv_Objects.TabIndex = 20;
-            this.tv_Objects.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tv_Objects_AfterSelect);
-            this.tv_Objects.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tv_Objects_NodeMouseClick);
-            this.tv_Objects.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tv_Objects_KeyDown);
+            this.chTablesOnly.AutoSize = true;
+            this.chTablesOnly.Checked = true;
+            this.chTablesOnly.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chTablesOnly.Location = new System.Drawing.Point(6, 456);
+            this.chTablesOnly.Name = "chTablesOnly";
+            this.chTablesOnly.Size = new System.Drawing.Size(82, 17);
+            this.chTablesOnly.TabIndex = 27;
+            this.chTablesOnly.Text = "Tables Only";
+            this.chTablesOnly.UseVisualStyleBackColor = true;
+            // 
+            // lbl_tables_count
+            // 
+            this.lbl_tables_count.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbl_tables_count.AutoSize = true;
+            this.lbl_tables_count.Location = new System.Drawing.Point(160, 457);
+            this.lbl_tables_count.Name = "lbl_tables_count";
+            this.lbl_tables_count.Size = new System.Drawing.Size(16, 13);
+            this.lbl_tables_count.TabIndex = 26;
+            this.lbl_tables_count.Text = "...";
+            this.lbl_tables_count.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBox1.Image = global::PROC_GEN.Properties.Resources.findIcon;
+            this.pictureBox1.Location = new System.Drawing.Point(152, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(24, 25);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 25;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // txtTableFilter
+            // 
+            this.txtTableFilter.Location = new System.Drawing.Point(41, 4);
+            this.txtTableFilter.Name = "txtTableFilter";
+            this.txtTableFilter.Size = new System.Drawing.Size(109, 20);
+            this.txtTableFilter.TabIndex = 24;
+            this.txtTableFilter.Text = "SupplyChain_Stocks_In_Storage";
+            this.txtTableFilter.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtTableFilter_KeyUp);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(3, 7);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(32, 13);
+            this.label14.TabIndex = 23;
+            this.label14.Text = "Filter:";
+            // 
+            // lstObjects
+            // 
+            this.lstObjects.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstObjects.ContextMenuStrip = this.cmTV_Objects;
+            this.lstObjects.HideSelection = false;
+            this.lstObjects.Location = new System.Drawing.Point(0, 34);
+            this.lstObjects.Name = "lstObjects";
+            this.lstObjects.Size = new System.Drawing.Size(179, 416);
+            this.lstObjects.TabIndex = 20;
+            this.lstObjects.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tv_Objects_AfterSelect);
+            this.lstObjects.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tv_Objects_NodeMouseClick);
+            this.lstObjects.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tv_Objects_KeyDown);
             // 
             // cmTV_Objects
             // 
@@ -815,6 +445,9 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.label2);
+            this.splitContainer1.Panel1.Controls.Add(this.label1);
+            this.splitContainer1.Panel1.Controls.Add(this.lst_Fields);
             this.splitContainer1.Panel1.Controls.Add(this.toolStrip1);
             this.splitContainer1.Panel1.Controls.Add(this.txtQuery);
             // 
@@ -824,6 +457,17 @@
             this.splitContainer1.Size = new System.Drawing.Size(598, 476);
             this.splitContainer1.SplitterDistance = 271;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // lst_Fields
+            // 
+            this.lst_Fields.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lst_Fields.FormattingEnabled = true;
+            this.lst_Fields.Location = new System.Drawing.Point(459, 26);
+            this.lst_Fields.Name = "lst_Fields";
+            this.lst_Fields.Size = new System.Drawing.Size(133, 199);
+            this.lst_Fields.TabIndex = 1;
             // 
             // toolStrip1
             // 
@@ -857,8 +501,8 @@
             // tsStatus
             // 
             this.tsStatus.Name = "tsStatus";
-            this.tsStatus.Size = new System.Drawing.Size(82, 22);
-            this.tsStatus.Text = "Disconnected.";
+            this.tsStatus.Size = new System.Drawing.Size(26, 22);
+            this.tsStatus.Text = "Idle";
             // 
             // tsDelete
             // 
@@ -902,7 +546,6 @@
             // toolStripButton1
             // 
             this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
@@ -915,14 +558,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtQuery.ContextMenuStrip = this.cmQueryArea;
-            this.txtQuery.Enabled = false;
-            this.txtQuery.Location = new System.Drawing.Point(3, 3);
+            this.txtQuery.Location = new System.Drawing.Point(3, 26);
             this.txtQuery.Multiline = true;
             this.txtQuery.Name = "txtQuery";
             this.txtQuery.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtQuery.Size = new System.Drawing.Size(589, 238);
+            this.txtQuery.Size = new System.Drawing.Size(450, 215);
             this.txtQuery.TabIndex = 0;
-            this.txtQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtQuery_KeyDown);
             // 
             // cmQueryArea
             // 
@@ -1011,22 +652,23 @@
             this.bgwQuery.WorkerSupportsCancellation = true;
             this.bgwQuery.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwQuery_DoWork);
             // 
-            // label14
+            // label1
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(3, 7);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(32, 13);
-            this.label14.TabIndex = 23;
-            this.label14.Text = "Filter:";
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 10);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(70, 13);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Query Builder";
             // 
-            // textBox1
+            // label2
             // 
-            this.textBox1.Location = new System.Drawing.Point(41, 4);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(135, 20);
-            this.textBox1.TabIndex = 24;
-            this.textBox1.Text = "Consolidated";
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(456, 10);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(47, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Columns";
             // 
             // Form1
             // 
@@ -1043,27 +685,20 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Postgre Swift";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.Form1_Shown);
-            this.grp_ObjectInfo.ResumeLayout(false);
-            this.grp_ObjectInfo.PerformLayout();
-            this.grp_ColumnInfo.ResumeLayout(false);
-            this.grp_ColumnInfo.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numScale)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numColumnSize)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tabControl2.ResumeLayout(false);
-            this.tpQuery.ResumeLayout(false);
             this.tpTableManager.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.cmTV_Objects.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
@@ -1080,15 +715,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox txtDLLs;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ListBox lst_Tables;
-        private System.Windows.Forms.Label lbl_tables_count;
-        private System.Windows.Forms.ListBox lst_Fields;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.GroupBox grp_ObjectInfo;
-        private System.Windows.Forms.GroupBox grp_ColumnInfo;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
@@ -1103,30 +729,8 @@
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel lbl_status;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox txtColumnName;
-        private System.Windows.Forms.Button btnColAdd;
-        private System.Windows.Forms.ComboBox cmbColumnType;
-        private System.Windows.Forms.NumericUpDown numColumnSize;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Button btnColDel;
-        private System.Windows.Forms.NumericUpDown numScale;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox txtAlterColumns;
-        private System.Windows.Forms.LinkLabel lnkRefreshTables;
-        private System.Windows.Forms.LinkLabel lnkRefreshColumns;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox txtColumnDefault;
-        private System.Windows.Forms.CheckBox ch_Nullable;
-        private System.Windows.Forms.CheckBox ch_Autonumber;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
-        private System.Windows.Forms.CheckBox chTablesOnly;
-        private System.Windows.Forms.Button btnTBL_Delete;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TabControl tabControl2;
-        private System.Windows.Forms.TabPage tpQuery;
         private System.Windows.Forms.TabPage tpTableManager;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TextBox txtQuery;
@@ -1139,7 +743,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton tsSave;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.TreeView tv_Objects;
+        private System.Windows.Forms.TreeView lstObjects;
         private System.Windows.Forms.ContextMenuStrip cmTV_Objects;
         private System.Windows.Forms.ToolStripMenuItem queryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem describeToolStripMenuItem;
@@ -1165,10 +769,14 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.ComponentModel.BackgroundWorker bgwQuery;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox txtTableFilter;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtTableFilter;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.ListBox lst_Fields;
+        private System.Windows.Forms.Label lbl_tables_count;
+        private System.Windows.Forms.CheckBox chTablesOnly;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }
 

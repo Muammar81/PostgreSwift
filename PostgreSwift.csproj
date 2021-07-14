@@ -173,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DiscJuggler.ico" />
+    <None Include="Resources\findIcon.png" />
     <None Include="Resources\Loading.gif" />
     <None Include="Resources\QSoft Blank.gif" />
     <None Include="Resources\little_Gear.gif" />

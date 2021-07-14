@@ -1,10 +1,12 @@
-﻿using System;
-using System.Data;
-using System.Data.OracleClient;
-using System.IO;
-using System.Windows.Forms;
-using Npgsql;
+﻿using Npgsql;
 using QSoft;
+using System;
+using System.Data;
+using System.Diagnostics;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 
 namespace PROC_GEN
@@ -52,29 +54,7 @@ namespace PROC_GEN
             con.Close();
             lbl_status.Text = "Disconnected";
             connectToolStripMenuItem.Text = "&Connect";
-
-            lst_Tables.Items.Clear();
-            lst_Fields.Items.Clear();
-            lbl_tables_count.Text = "Idle";
-            tv_Objects.Nodes.Clear();
-            txtDLLs.Clear();
-            txtColumnDefault.Clear();
-            txtColumnName.Text = " ";
-            numColumnSize.Value = 1;
-            numScale.Value = 0;
-            ch_Autonumber.Checked = false;
-            ch_Nullable.Checked = false;
-
-            cmbColumnType.Text = String.Empty;
-            txtAlterColumns.Clear();
-
-            grp_ObjectInfo.Enabled = false;
-            grp_ColumnInfo.Enabled = false;
-            txtQuery.Enabled = false;
             tsStatus.Text = "Disconnected.";
-
-
-
 
             authForm.Show();
             this.Hide();
@@ -106,14 +86,14 @@ namespace PROC_GEN
             dataReader = cmd.ExecuteReader(CommandBehavior.Default);
 
             string strTemp = String.Empty;
-            lst_Tables.Items.Clear();
+            lstObjects.Nodes.Clear();
 
 
             while (dataReader.Read())
             {
                 strTemp = dataReader.GetString(0);
                 if (!strTemp.Contains("$"))
-                    lst_Tables.Items.Add(strTemp);
+                    lstObjects.Nodes.Add(strTemp);
             }
 
             strTemp = String.Empty;
@@ -128,7 +108,7 @@ namespace PROC_GEN
 
 
 
-            lbl_tables_count.Text = lst_Tables.Items.Count + strObjects + "were found.";
+            lbl_tables_count.Text = lstObjects.Nodes.Count + strObjects + "were found.";
 
             //dataReader.Close();
         }
@@ -138,6 +118,30 @@ namespace PROC_GEN
         bool b_Multiple;
 
 
+        private string GetColumnsString(string strTableName)
+        {
+            con = new NpgsqlConnection(connectionString);
+            con.Open();
+            try
+            {
+                cmd = new NpgsqlCommand($"SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{strTableName}';", con);
+                dataReader = null;
+
+                strTemp = String.Empty;
+                dataReader = cmd.ExecuteReader();
+                while (dataReader.Read())
+                    strTemp += dataReader.GetString(0) + "\",\"";
+
+                if (strTemp.Length > 0)
+                    strFields_with_commas = strTemp.Substring(0, strTemp.Length - 2);
+                else
+                    strFields_with_commas = strTemp;
+
+                return $"\"{strFields_with_commas}";//.Split(',');
+            }
+            catch (Exception) { return String.Empty; }
+
+        }
         private void PopulateColumns(string strTableName)
         {
 
@@ -147,17 +151,11 @@ namespace PROC_GEN
             {
 
                 lst_Fields.Items.Clear();
-                if (lst_Tables.SelectedItems.Count == 1)
+                if (lstObjects.SelectedNode != null)
                 {
                     lst_Fields.Enabled = true;
-                    btnColDel.Enabled = true;
 
                     #region Retrieving Columns
-                    /////////Preparing strFields
-                    /*                    cmd = new NpgsqlCommand(@"select column_name " +//,data_type 
-                                                                "from information_schema.columns " +
-                                                                $"where table_name = '{strTableName}';", con);*/
-
                     cmd = new NpgsqlCommand($"SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{strTableName}';", con);
                     //adap = new NpgsqlDataAdapter(cmd);
                     //dataReader.Close();
@@ -191,7 +189,6 @@ namespace PROC_GEN
                 else
                 {
                     lst_Fields.Enabled = false;
-                    btnColDel.Enabled = false;
                 }
             }
             catch (Exception e)
@@ -237,79 +234,12 @@ namespace PROC_GEN
             return _strTemp;
         }
 
-        private void lst_Tables_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //con = new NpgsqlConnection(connectionString);
-            //con.Open();
-            try
-            {
-                #region generate table list
-                selectedItems = String.Empty;
-                if (lst_Tables.SelectedItems.Count > 1)
-                {
-                    for (int x = 0; x < lst_Tables.SelectedItems.Count; x++)
-                        selectedItems += lst_Tables.SelectedItems[x] + ",";
 
-                    selectedItems = selectedItems.Substring(0, selectedItems.Length - 1);
-                    b_Multiple = true;
-
-                    ar_tables = new string[selectedItems.Split(',').Length];
-                    ar_tables = selectedItems.Split(',');
-                }
-                else
-                {
-                    selectedItems = lst_Tables.Items[lst_Tables.SelectedIndex].ToString();
-                    b_Multiple = false;
-
-                    ar_tables = new string[1];
-                    ar_tables[0] = selectedItems;
-                }
-                #endregion
-                PopulateColumns(lst_Tables.SelectedItems[0].ToString());
-
-
-
-
-                ///////////////// Generating Object(s) DLL
-                string strSelectedObjectType = String.Empty;
-                txtDLLs.Clear();
-
-                foreach (string strObjectName in ar_tables)
-                {
-                    strSelectedObjectType = GetObjectType(strObjectName);
-                    txtDLLs.Text += PopulateObjectDLL(strSelectedObjectType, strObjectName, userName) + "/\r\n\r\n";
-                }
-                ///////////////////////////////////////
-            }
-            catch (Exception) { }
-        }
-
-
-
-        bool CTRL_A;
-        private void lst_Tables_KeyDown(object sender, KeyEventArgs e)
-        {
-            CTRL_A = true;
-
-
-            int x = 0;
-            if (e.Control && e.KeyValue == 65)
-            {
-                for (; x < lst_Tables.Items.Count; x++)
-                    lst_Tables.SelectedIndex = x;
-                //lst_Tables.SetSelected(x,true);
-
-            }
-
-            CTRL_A = false;
-
-
-        }
 
         private void saveToFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             saveFileDialog1.Filter = @"SQL Files|*.sql";
-            saveFileDialog1.FileName = userName + "_PROCS.sql";
+            saveFileDialog1.FileName = userName + "_Query.sql";
             saveFileDialog1.ShowDialog();
 
             string FinalFileName = saveFileDialog1.FileName.ToLower().EndsWith(".sql") ? saveFileDialog1.FileName : saveFileDialog1.FileName + ".sql";
@@ -327,7 +257,7 @@ namespace PROC_GEN
 CLS
 @SQLPLUS " + userName + @"/" + password + ((database.Length) > 0 ? @"@" + database : "") + @" @""" + FinalFileName.Replace(System.Environment.CurrentDirectory, ".") + @"""
 @ECHO.
-@ECHO " + Convert.ToString(lst_Tables.SelectedItems.Count * 3) + @" procedures were created successfully!
+@ECHO " + @" Query file created successfully!
 @PAUSE
 @EXIT");
 
@@ -348,15 +278,15 @@ CLS
                         Cols = Cols.Substring(0, Cols.Length - 2);
                     //Cols = Cols.Replace(";", "\r\n");
 
-                    DialogResult dr = MessageBox.Show("Are you sure you want to drop the column(s):\r\n" + Cols + "\r\nFrom " + lst_Tables.SelectedItem.ToString() + "?", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                    DialogResult dr = MessageBox.Show("Are you sure you want to drop the column(s):\r\n" + Cols + "\r\nFrom " + lstObjects.SelectedNode.Text + "?", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
                     if (dr == DialogResult.Yes)
                     {
                         foreach (string c in Cols.Trim().Split(','))
                         {
-                            cmd.CommandText = @"ALTER TABLE " + lst_Tables.SelectedItem.ToString() + " DROP COLUMN " + c;
+                            cmd.CommandText = @"ALTER TABLE " + lstObjects.SelectedNode.Text + " DROP COLUMN " + c;
                             cmd.ExecuteNonQuery();
                         }
-                        PopulateColumns(lst_Tables.SelectedItems[0].ToString());
+                        PopulateColumns(lstObjects.SelectedNode.Text);
                     }
                 }
                 else
@@ -366,234 +296,10 @@ CLS
         }
 
         string[] str_AlterCommand;
-        private void btnColAdd_Click(object sender, EventArgs e)
-        {
-            if (txtAlterColumns.Text.Length > 0)
-            {
-                int iColsEffected = 0;
-                string tmp = txtAlterColumns.Text.Replace("\r\n/\r\n", ":");
-                tmp = tmp.Substring(0, tmp.Length - 1);
-                string[] alterLines = tmp.Split(':');
-                foreach (string strCommandLine in alterLines)
-                {
-                    cmd.CommandText = strCommandLine;
-                    cmd.ExecuteNonQuery();
-                    iColsEffected++;
-                }
-                if (lst_Tables.SelectedItems.Count > 0)
-                    PopulateColumns(lst_Tables.SelectedItems[0].ToString());
-                MessageBox.Show(iColsEffected + " Table(s) altered successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+        private DataTable dtSchemas;
 
-        }
 
-        private void GenerateColumnDDL()
-        {
-            if (txtColumnName.Text.Length > 0)
-            {
-                str_AlterCommand = new string[ar_tables.Length];
 
-                if (cmbColumnType.Text == "NUMBER")
-                {
-                    for (int x = 0; x < ar_tables.Length; x++)
-                        str_AlterCommand[x] = "ALTER TABLE " + ar_tables[x] + " ADD " + txtColumnName.Text + " " + cmbColumnType.Text + "(" + numColumnSize.Value.ToString() + "," + numScale.Value + ")";
-                }
-                else
-                {
-                    for (int x = 0; x < ar_tables.Length; x++)
-                        str_AlterCommand[x] = "ALTER TABLE " + ar_tables[x] + " ADD " + txtColumnName.Text + " " + cmbColumnType.Text + "(" + numColumnSize.Value.ToString() + ")";
-                }
-
-                txtAlterColumns.Text = String.Empty;
-                for (int x = 0; x < ar_tables.Length; x++)
-                    txtAlterColumns.Text += str_AlterCommand[x] + "\r\n/\r\n";
-            }
-        }
-
-        private void cmbColumnType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            switch (cmbColumnType.Text)
-            {
-                case "CHAR":
-                    {
-                        numColumnSize.Enabled = true;
-                        numScale.Enabled = false;
-                        numColumnSize.Maximum = 4000;
-                        break;
-                    }
-                case "VARCHAR2":
-                    {
-                        numColumnSize.Enabled = true;
-                        numScale.Enabled = false;
-                        numColumnSize.Maximum = 4000;
-                        break;
-                    }
-                case "NCHAR":
-                    {
-                        numColumnSize.Enabled = false;
-                        numScale.Enabled = false;
-                        numColumnSize.Maximum = 4000;
-                        break;
-                    }
-                case "NVARCHAR2":
-                    {
-                        numColumnSize.Enabled = true;
-                        numScale.Enabled = false;
-                        numColumnSize.Maximum = 4000;
-                        break;
-                    }
-                case "LONG":
-                    {
-                        numColumnSize.Enabled = false;
-                        numScale.Enabled = false;
-                        numColumnSize.Maximum = 4000;
-                        break;
-                    }
-                case "FLOAT":
-                    {
-                        numColumnSize.Enabled = false;
-                        numScale.Enabled = false;
-                        numColumnSize.Maximum = 4000;
-                        break;
-                    }
-                case "DATE":
-                    {
-                        numColumnSize.Enabled = false;
-                        numScale.Enabled = false;
-                        numColumnSize.Maximum = 4000;
-                        break;
-                    }
-                case "RAW":
-                    {
-                        numColumnSize.Enabled = false;
-                        numScale.Enabled = false;
-                        numColumnSize.Maximum = 4000;
-                        break;
-                    }
-                case "LONGRAW":
-                    {
-                        numColumnSize.Enabled = false;
-                        numScale.Enabled = false;
-                        numColumnSize.Maximum = 4000;
-                        break;
-                    }
-                case "ROWID":
-                    {
-                        numColumnSize.Enabled = false;
-                        numScale.Enabled = false;
-                        numColumnSize.Maximum = 4000;
-                        break;
-                    }
-                case "UROWID":
-                    {
-                        numColumnSize.Enabled = false;
-                        numScale.Enabled = false;
-                        numColumnSize.Maximum = 4000;
-                        break;
-                    }
-                case "BLOB":
-                    {
-                        numColumnSize.Enabled = false;
-                        numScale.Enabled = false;
-                        numColumnSize.Maximum = 4000;
-                        break;
-                    }
-                case "CLOB":
-                    {
-                        numColumnSize.Enabled = false;
-                        numScale.Enabled = false;
-                        numColumnSize.Maximum = 4000;
-                        break;
-                    }
-                case "NCLOB":
-                    {
-                        numColumnSize.Enabled = false;
-                        numScale.Enabled = false;
-                        numColumnSize.Maximum = 4000;
-                        break;
-                    }
-                case "BFILE":
-                    {
-                        numColumnSize.Enabled = false;
-                        numScale.Enabled = false;
-                        numColumnSize.Maximum = 4000;
-                        break;
-                    }
-                case "NUMBER":
-                    {
-                        numColumnSize.Enabled = true;
-                        numScale.Enabled = true;
-                        numColumnSize.Maximum = 38;
-                        break;
-                    }
-            }
-            GenerateColumnDDL();
-        }
-
-        private void txtAlterColumns_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Control && e.KeyValue == 65)
-                txtAlterColumns.SelectAll();
-        }
-
-        private void btn_Create_PROCs_Click(object sender, EventArgs e)
-        {
-            if (lst_Tables.SelectedItems.Count > 0)
-            {
-                int iTablesEffected = lst_Tables.SelectedItems.Count;
-                int iProcsEffected = 0;
-                string tmp =
-                    userName.Replace("\r\n/\r\n", ":");
-                tmp = tmp.Substring(0, tmp.Length - 1);
-
-                string[] alterLines = tmp.Split(':');
-                foreach (string strCommandLine in alterLines)
-                {
-                    cmd.CommandText = strCommandLine;
-                    cmd.ExecuteNonQuery();
-                    iProcsEffected++;
-                }
-                PopulateObjectList(chTablesOnly.Checked);
-                GenerateObjectList(ref tv_Objects);
-
-                MessageBox.Show(iProcsEffected + " Procedures for " + iTablesEffected + " Tables were created successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-
-        private void lnkRefreshColumns_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            if (lst_Tables.SelectedItems.Count > 0)
-                PopulateColumns(lst_Tables.SelectedItems[0].ToString());
-        }
-
-        private void lst_Fields_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string cmdString = $"SELECT tablename FROM pg_catalog.pg_tables WHERE tablename like '%{lst_Tables.SelectedItem}%' ORDER BY tablename ASC;';";
-            try
-            {
-                txtColumnName.Text = lst_Fields.SelectedItems[0].ToString();
-
-                DataTable dt = GenDT(cmdString);
-
-                cmbColumnType.Text = Convert.ToString(dt.Rows[0]["DATA_TYPE"]);
-                if (cmbColumnType.Text == "NUMBER")
-                {
-                    numColumnSize.Value = Convert.ToDecimal(dt.Rows[0]["DATA_PRECISION"]);
-                    numScale.Value = Convert.ToDecimal(dt.Rows[0]["DATA_SCALE"]);
-                }
-                else
-                {
-                    numColumnSize.Value = Convert.ToDecimal(dt.Rows[0]["DATA_LENGTH"]);
-                    numScale.Value = 0;
-                }
-
-                txtColumnDefault.Text = Convert.ToString(dt.Rows[0]["DATA_DEFAULT"]);
-                ch_Nullable.Checked = (Convert.ToString(dt.Rows[0]["NULLABLE"]) == "Y") ? true : false;
-
-                GenerateColumnDDL();
-            }
-            catch (Exception) { }
-        }
 
         private DataTable GenDT(string strSelect)
         {
@@ -608,63 +314,47 @@ CLS
             return _dt;
         }
 
-        private void txtColumnName_TextChanged(object sender, EventArgs e)
-        {
-            GenerateColumnDDL();
-        }
-
-        private void numColumnSize_ValueChanged(object sender, EventArgs e)
-        {
-            GenerateColumnDDL();
-        }
-
-        private void numScale_ValueChanged(object sender, EventArgs e)
-        {
-            GenerateColumnDDL();
-        }
-
-        private void txtColumnDefault_TextChanged(object sender, EventArgs e)
-        {
-            GenerateColumnDDL();
-        }
-
-        private void ch_Nullable_CheckedChanged(object sender, EventArgs e)
-        {
-            GenerateColumnDDL();
-        }
-
         private void GenerateObjectList(ref TreeView tv)
         {
+
             tv.Nodes.Clear();
-            DataTable dt_TYPES, dt_TABLES;
-            string schemaName, tableName;
 
+
+            string tableName;
             string selSchemas = "SELECT schema_name FROM information_schema.schemata;";
-            string cmdString;
-            dt_TYPES = GenDT(selSchemas);
-            foreach (DataRow drTYPE in dt_TYPES.Rows)
-            {
-                schemaName = drTYPE["schema_name"].ToString();
-                tv.Nodes.Add(schemaName, schemaName);
-                //MessageBox.Show(schemaName);
-                cmdString = $"SELECT table_name FROM information_schema.tables " +
-                               $"WHERE table_name like '%' AND table_schema = '{schemaName}'" +
-                               $"ORDER BY table_name ASC;';";
+            string cmdString = String.Empty;
 
-                dt_TABLES = GenDT(cmdString);
-                foreach (DataRow drTABLE in dt_TABLES.Rows)
+
+            if (dtSchemas == null)
+                dtSchemas = GenDT(selSchemas);
+
+            foreach (DataRow drTYPE in dtSchemas.Rows)
+            {
+                string schemaName = drTYPE["schema_name"].ToString();
+                tv.Nodes.Add(schemaName, schemaName);
+
+
+                //if (dtTables == null && !tvLoaded)
+                {
+                    cmdString = $"SELECT table_name FROM information_schema.tables " +
+                                $"WHERE table_name like '%' AND table_schema = '{schemaName}'" +
+                                $"ORDER BY table_name ASC;';";
+                    dtTables = GenDT(cmdString);
+                }
+
+                foreach (DataRow drTABLE in dtTables.Rows)
                 {
                     tableName = drTABLE["table_name"].ToString();
-                    if (!tableName.Contains("$"))
+                    if (tableName.ToUpper().Contains($"{txtTableFilter.Text.ToUpper()}") || txtTableFilter.Text.Length == 0)
+                    {
+                        if (tv.Nodes[schemaName] == null)
+                            tv.Nodes.Add(schemaName, schemaName);
+
                         tv.Nodes[schemaName].Nodes.Add(tableName);
+                    }
                 }
             }
-        }
-
-        private void lnkRefreshTables_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            PopulateObjectList(chTablesOnly.Checked);
-            GenerateObjectList(ref tv_Objects);
+            tvLoaded = true;
         }
 
         private void chShowAll_CheckedChanged(object sender, EventArgs e)
@@ -675,9 +365,15 @@ CLS
 
         NpgsqlDataAdapter daLoaded;
         DataTable dtLoaded;
-        private void ExecuteQuery(string _strQuery, NpgsqlConnection _con)
+        private void ExecuteQuery(string _strQuery)
         {
-            c = new OracleDataGridViewHelper(_con, _strQuery);
+
+
+
+
+
+            con = new NpgsqlConnection(connectionString);
+            con.Open();
 
             int _r = 0;
             dtLoaded = new DataTable();
@@ -696,6 +392,7 @@ CLS
                 }
                 catch (Exception ex)
                 {
+                    Debug.Print(ex.Message);
                     tsStatus.Text = ex.Message;
                 }
 
@@ -704,9 +401,9 @@ CLS
 
                     tsStatus.Text = _r.ToString() + " rows were selected";
                     grdQuery.DataSource = dtLoaded;
-                    string err = c.bindGrid(ref grdQuery, _con, _strQuery);
-                    if (err.Length > 0)
-                        tsStatus.Text = err;
+                    /*                    string err = c.bindGrid(ref grdQuery, con, _strQuery);
+                                        if (err.Length > 0)
+                                            tsStatus.Text = err;*/
                 }
             }
             else
@@ -728,24 +425,14 @@ CLS
 
         }
 
-        private void txtQuery_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode.ToString() == "F8")
-
-                grdQuery.DataSource = null;
-            if (txtQuery.SelectionLength > 0)
-                if (txtQuery.SelectedText.ToUpper().Contains("SELECT"))
-                    ProcessQuery(txtQuery.SelectedText);
-        }
-
         private void ProcessQuery(string strQuery)
         {
-            ExecuteQuery(strQuery, con);
+            ExecuteQuery(strQuery);
         }
 
         private void tabControl2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tabControl2.SelectedTab == tpQuery)
+            //if (tabControl2.SelectedTab == tpQuery)
             {
                 txtQuery.Focus();
                 txtQuery.SelectionStart = txtQuery.Text.Length;
@@ -787,10 +474,7 @@ CLS
 
         private void tsExecute_Click(object sender, EventArgs e)
         {
-            grdQuery.DataSource = null;
-            if (txtQuery.SelectionLength > 0)
-                if (txtQuery.SelectedText.ToUpper().Contains("SELECT"))
-                    ProcessQuery(txtQuery.SelectedText);
+            ExecuteSelect();
         }
 
         private void tsSave_Click(object sender, EventArgs e)
@@ -816,25 +500,29 @@ CLS
         string strTempQuery;
         private void queryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PopulateColumns(tv_Objects.SelectedNode.Text);
-            txtQuery.Text = "SELECT " + strFields_with_commas.Replace(",", ", ") + " FROM " + tv_Objects.SelectedNode.Text;
             tsExecute.Image = Properties.Resources.Loading;
+
+            string columnsWithCommas = GetColumnsString(lstObjects.SelectedNode.Text);
+            //PopulateColumns(tv_Objects.SelectedNode.Text);
+            var tbl = lstObjects.SelectedNode.Text;
+            var schema = lstObjects.SelectedNode.Parent?.Text;
+            var strFields_with_commas = GetColumnsString(tbl);
+
+            txtQuery.Text = $"SELECT {strFields_with_commas.Replace(",", ", ")} FROM {schema}.\"{ tbl}\" LIMIT 100";
+
 
             tsStatus.Text = "Loading...";
 
             txtQuery.SelectAll();
             strTempQuery = txtQuery.SelectedText;
-            ExecuteQuery(strTempQuery, con);
+            ExecuteQuery(strTempQuery);
             //bgwQuery.RunWorkerAsync();
+            tsExecute.Image = Properties.Resources.Q;
         }
 
         private void describeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            txtQuery.Text = "DESC " + tv_Objects.SelectedNode.Text;
-            grdQuery.DataSource = null;
-            if (txtQuery.SelectionLength > 0)
-                if (txtQuery.SelectedText.ToUpper().Contains("SELECT"))
-                    ProcessQuery(txtQuery.SelectedText);
+            PopulateColumns(lstObjects.SelectedNode.Text);
         }
 
         private void tv_Objects_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -845,17 +533,17 @@ CLS
         private void toUPPERToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (txtQuery.SelectionLength > 0)
-                txtQuery.Text = txtQuery.Text.Replace(txtQuery.SelectedText, txtQuery.SelectedText.ToUpper());
+                txtQuery.SelectedText = txtQuery.SelectedText.SQLUpper();
             else
-                txtQuery.Text = txtQuery.Text.ToUpper();
+                txtQuery.Text = txtQuery.Text.SQLUpper();
         }
 
         private void toLowerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (txtQuery.SelectionLength > 0)
-                txtQuery.Text = txtQuery.Text.Replace(txtQuery.SelectedText, txtQuery.SelectedText.ToLower());
+                txtQuery.SelectedText = txtQuery.SelectedText.SQLLower();
             else
-                txtQuery.Text = txtQuery.Text.ToLower();
+                txtQuery.Text = txtQuery.Text.SQLLower();
         }
 
         private void clearToolStripMenuItem_Click(object sender, EventArgs e)
@@ -868,10 +556,38 @@ CLS
 
         private void executeToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            ExecuteSelect();
+        }
+
+        private void ExecuteSelect()
+        {
+            if (txtQuery.SelectedText.Length > 0)
+            {
+                if (!txtQuery.SelectedText.ToUpper().Contains("SELECT"))
+                {
+                    tsStatus.Text = "Not A Select Statement";
+                    return;
+                }
+
+            }
+            else
+            {
+                if (!txtQuery.Text.ToUpper().Contains("SELECT"))
+                {
+                    tsStatus.Text = "Not A Select Statement";
+                    return;
+                }
+            }
+
+
+
             grdQuery.DataSource = null;
+
+
             if (txtQuery.SelectionLength > 0)
-                if (txtQuery.SelectedText.ToUpper().Contains("SELECT"))
-                    ProcessQuery(txtQuery.SelectedText);
+                ProcessQuery(txtQuery.SelectedText);
+            else
+                ProcessQuery(txtQuery.Text);
         }
 
         private void compactToolStripMenuItem_Click(object sender, EventArgs e)
@@ -884,10 +600,30 @@ CLS
 
         private void extendedToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            string tmp;
             if (txtQuery.SelectionLength > 0)
+            {
+                tmp = txtQuery.SelectedText;
                 txtQuery.Text = txtQuery.Text.Replace(txtQuery.SelectedText, txtQuery.SelectedText.Replace(", ", ",\r\n"));
+
+                /*                txtQuery.Text = txtQuery.Text.Replace(txtQuery.SelectedText, txtQuery.SelectedText.Replace("FROM", "\r\nFROM"));
+                                txtQuery.Text = txtQuery.Text.Replace(txtQuery.SelectedText, txtQuery.SelectedText.Replace("WHERE", "\r\nWHERE"));
+                                txtQuery.Text = txtQuery.Text.Replace(txtQuery.SelectedText, txtQuery.SelectedText.Replace("JOIN", "\r\nJOIN"));
+                                txtQuery.Text = txtQuery.Text.Replace(txtQuery.SelectedText, txtQuery.SelectedText.Replace("GROUP BY", "\r\nGROUP BY"));
+                                txtQuery.Text = txtQuery.Text.Replace(txtQuery.SelectedText, txtQuery.SelectedText.Replace("ORDER BY", "\r\nORDER BY"));
+                                txtQuery.Text = txtQuery.Text.Replace(txtQuery.SelectedText, txtQuery.SelectedText.Replace("LIMIT", "\r\nLIMIT"));*/
+            }
             else
-                txtQuery.Text = txtQuery.Text.Replace(", ", ",\r\n");
+            {
+                tmp = txtQuery.Text;
+                txtQuery.Text = txtQuery.Text.Replace(txtQuery.Text, txtQuery.Text.Replace(", ", ",\r\n"));
+                /*               txtQuery.Text = txtQuery.Text.Replace(txtQuery.Text, txtQuery.Text.ToUpper().Replace("FROM", "\r\nFROM"));
+                               txtQuery.Text = txtQuery.Text.Replace(txtQuery.Text, txtQuery.Text.ToUpper().Replace("WHERE", "\r\nWHERE"));
+                               txtQuery.Text = txtQuery.Text.Replace(txtQuery.Text, txtQuery.Text.ToUpper().Replace("JOIN", "\r\nJOIN"));
+                               txtQuery.Text = txtQuery.Text.Replace(txtQuery.Text, txtQuery.Text.ToUpper().Replace("GROUP BY", "\r\nGROUP BY"));
+                               txtQuery.Text = txtQuery.Text.Replace(txtQuery.Text, txtQuery.Text.ToUpper().Replace("ORDER BY", "\r\nORDER BY"));
+                               txtQuery.Text = txtQuery.Text.Replace(txtQuery.Text, txtQuery.Text.ToUpper().Replace("LIMIT", "\r\nLIMIT"));*/
+            }
 
         }
 
@@ -923,6 +659,9 @@ CLS
         private string database;
         private string password;
         private bool closingConfirmed;
+        private DataTable dtTables;
+        private string schemaName;
+        private bool tvLoaded;
 
         private void generateObjectStructureReportToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1043,7 +782,7 @@ CLS
             sw.Flush();
             sw.Close();
 
-            #endregion        
+            #endregion
         }
 
         //About _About;
@@ -1064,12 +803,12 @@ CLS
         }
         private void tv_Objects_KeyDown(object sender, KeyEventArgs e)
         {
-            if (tv_Objects.SelectedNode != null)
-                if (tv_Objects.SelectedNode.Level == 1)
+            if (lstObjects.SelectedNode != null)
+                if (lstObjects.SelectedNode.Level == 1)
                     if (e.KeyCode == Keys.Enter)
                     {
-                        PopulateColumns(tv_Objects.SelectedNode.Text);
-                        txtQuery.Text = "SELECT " + strFields_with_commas.Replace(",", ", ") + " FROM " + tv_Objects.SelectedNode.Text;
+                        PopulateColumns(lstObjects.SelectedNode.Text);
+                        txtQuery.Text = "SELECT " + strFields_with_commas.Replace(",", ", ") + " FROM " + lstObjects.SelectedNode.Text;
 
                         grdQuery.DataSource = null;
                         if (txtQuery.SelectionLength > 0)
@@ -1085,13 +824,13 @@ CLS
 
         private void txtTableFilter_TextChanged(object sender, EventArgs e)
         {
-            GenerateObjectList(ref tv_Objects);
+            GenerateObjectList(ref lstObjects);
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             PopulateObjectList(chTablesOnly.Checked);
-            GenerateObjectList(ref tv_Objects);
+            GenerateObjectList(ref lstObjects);
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -1104,8 +843,12 @@ CLS
             else
                 e.Cancel = true;
 
-            var dr = MessageBox.Show("You're about to be disconnected. Are you sure you want to continue?"
-                , "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+
+            var dr = MessageBox.Show("You're about to be Disconnected.\nAre you sure you want to continue?",
+                                     "Closing...",
+                                     MessageBoxButtons.YesNoCancel,
+                                     MessageBoxIcon.Warning,
+                                     MessageBoxDefaultButton.Button2);
 
             if (dr == DialogResult.Yes)
             {
@@ -1116,10 +859,18 @@ CLS
 
         }
 
-        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        private void txtTableFilter_KeyUp(object sender, KeyEventArgs e)
         {
-
+            if (e.KeyCode == Keys.Enter)
+                GenerateObjectList(ref lstObjects);
         }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            GenerateObjectList(ref lstObjects);
+        }
+
+
 
         private void registerOnlineToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1144,10 +895,38 @@ CLS
         {
             toolStrip1.Visible = true;
         }
-
-
-
-
-
     }
+
+
+}
+public static class StringExtension
+{
+    public static string SQLUpper(this string s)
+    {
+        return new StringBuilder(s)
+      .Replace("select", "SELECT")
+      .Replace("distinct", "DISTINCT")
+      .Replace("from", "FROM")
+      .Replace("join", "JOIN")
+      .Replace("where", "WHERE")
+      .Replace("group by", "GROUP BY")
+      .Replace("order by", "ORDER BY")
+      .Replace("limit", "LIMIT")
+      .ToString();
+    }
+
+    public static string SQLLower(this string s)
+    {
+        return new StringBuilder(s)
+      .Replace("SELECT", "select")
+      .Replace("DISTINCT", "distinct")
+      .Replace("FROM", "from")
+      .Replace("JOIN", "join")
+      .Replace("WHERE", "where")
+      .Replace("GROUP BY", "group by")
+      .Replace("ORDER BY", "order by")
+      .Replace("LIMIT", "limit")
+      .ToString();
+    }
+
 }
